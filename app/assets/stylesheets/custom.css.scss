@@ -1,0 +1,14 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+.jumbotron {
+  height: 700px;
+  background-image: url(skroutz.jpg);
+  margin: 100px 100px 100px;
+}
+
+.jumbotron h1 {
+  font-style: italic;
+  color: #fff;
+  text-align: left;
+}
