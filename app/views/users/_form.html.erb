@@ -47,6 +47,8 @@
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <%= f.submit(@user.new_record? ? "Sign up" : "Update", class: 'btn btn-primary btn-sm') %>
+          <%= link_to "Cancel", root_path, class: 'btn btn-primary btn-sm',
+               data: {confirm: "Are you sure you want to cancel and return to homepage?"}%>
         </div>
       </div>
     <% end %>

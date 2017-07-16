@@ -5,11 +5,17 @@
   height: 700px;
   background-image: url(skroutz.jpg);
   /* background-size: 100% 100%; */
-  margin: 100px 100px 100px;
+  margin-top: 100px;
+  margin-right: 100px;
+  margin-left: 100px;
 }
 
 .jumbotron h1 {
   font-style: italic;
   color: #fff;
   text-align: left;
+}
+
+.center {
+  text-align: center;
 }
