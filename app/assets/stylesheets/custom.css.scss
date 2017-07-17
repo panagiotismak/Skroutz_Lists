@@ -19,3 +19,11 @@
 .center {
   text-align: center;
 }
+
+.display_msg {
+  position: absolute;
+  top: 0px;
+  left: 30%;
+  right: 30%;
+  z-index: 105; 
+}

@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
 
   before_action :set_user, only: [:edit, :update, :show]
+  before_action :require_same_user, only: [:edit, :update, :show, :destroy]
+  before_action :require_admin, only: [:destroy]
 
   def new
    @user = User.new
@@ -41,5 +43,19 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def require_same_user
+    if current_user != @user && !current_user.admin?
+      flash[:danger] = "You don't have permissions to view this page"
+      redirect_to user_path(current_user)
+    end
+  end
+  
+  def require_admin
+    if logged_in? && !current_user.admin?
+      flash[:danger] = "Only admin users can perfom that action"
+      redirect_to user_path(current_user)
+    end
   end
 end

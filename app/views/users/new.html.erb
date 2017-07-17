@@ -32,12 +32,10 @@
           <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter password" %>
         </div>
       </div>
-      <div class="form-group">
-        <div class="col-sm-10">
-          <%= f.submit(@user.new_record? ? "Sign up" : "Update", class: 'btn btn-primary btn-sm') %>
-          Already have an account? <%= link_to "Log in", login_path %>
-        </div>
-      </div>
+      <%= f.submit(@user.new_record? ? "Sign up" : "Update", class: 'btn btn-primary btn-sm') %> 
     <% end %>
+    Already have an account? 
+    <a href="#" data-toggle="modal" data-target="#myModal">Log in</a>
+    <%= render 'login_modal' %>
   </div>
 </div>
