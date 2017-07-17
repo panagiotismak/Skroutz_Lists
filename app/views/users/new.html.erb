@@ -1,14 +1,8 @@
 
 
 <div class="row">
-  <div class="col-sm-6 col-md-8">
-    <div class="thumbnail">
-      <img src="..." alt="...">
-      <div class="caption">
-        <h3>Thumbnail label</h3>
-        <p>...</p>
-        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-      </div>
+  <div class="col-sm-6 col-md-7 col-md-offset-1">
+    <div class="thumbnail thumbnail_left">
     </div>
   </div>
   <div class="col-sm-6 col-md-4">
@@ -32,10 +26,10 @@
           <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Re-enter password" %>
         </div>
       </div>
-      <%= f.submit(@user.new_record? ? "Sign up" : "Update", class: 'btn btn-primary btn-sm') %> 
+      <div>
+        <%= f.submit "Sign up", class: 'btn btn-primary btn-sm col-sm-10' %> 
+      </div>
     <% end %>
-    Already have an account? 
-    <a href="#" data-toggle="modal" data-target="#myModal">Log in</a>
     <%= render 'login_modal' %>
   </div>
 </div>
