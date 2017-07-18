@@ -1,6 +1,10 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+body {
+  background-color: #eaeaea;
+}
+
 .thumbnail_left {
   margin-top: 70px;
   background-image: asset-url("background_home.png");
