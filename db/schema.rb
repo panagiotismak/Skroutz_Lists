@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170711054703) do
+ActiveRecord::Schema.define(version: 20170718122157) do
+
+  create_table "lists", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.boolean "visible"
+    t.integer "votes_count"
+    t.float "total_price"
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_lists_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "username"

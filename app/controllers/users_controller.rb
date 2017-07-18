@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     if @user.save
       session[:user_id] =@user.id
       flash[:success] = "Welcome to Skroutz Lists #{@user.username}"
-      redirect_to user_path(@user)
+      redirect_to lists_path
   	else
       render 'new'
     end
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   def update
     if @user.update(user_params)
       flash[:success] = "User was successfully updated"
-      redirect_to user_path(@user)
+      redirect_to lists_path
     else
       render 'edit'
     end
@@ -48,7 +48,7 @@ class UsersController < ApplicationController
   def require_same_user
     if current_user != @user && !current_user.admin?
       flash[:danger] = "You don't have permissions to view this page"
-      redirect_to user_path(current_user)
+      redirect_to lists_path
     end
   end
   
