@@ -2,10 +2,15 @@
 @import "bootstrap";
 
 .thumbnail_left {
+  margin-top: 70px;
   background-image: asset-url("background_home.png");
   background-repeat: no-repeat;
   background-size: cover;
   height: 388px;
+}
+
+.thumbnail_right {
+  margin-top: 70px;
 }
 
 .center {
@@ -18,4 +23,58 @@
   left: 30%;
   right: 30%;
   z-index: 105; 
+}
+
+#p01 {
+    overflow: hidden;
+    text-align: center;
+    margin-bottom: 0;
+}
+#p01:before,
+#p01:after {
+    background-color: #000;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+    width: 50%;
+}
+#p01:before {
+    right: 0.5em;
+    margin-left: -50%;
+}
+#p01:after {
+    left: 0.5em;
+    margin-right: -50%;
+}
+
+#myModal--effect-zoomIn.modal.fade .modal-dialog {
+   -webkit-transform: scale(0.1);
+   -moz-transform: scale(0.1);
+   -ms-transform: scale(0.1);
+   transform: scale(0.1);
+   top: 120px;
+   opacity: 0;
+   -webkit-transition: all 0.3s;
+   -moz-transition: all 0.3s;
+   transition: all 0.3s;
+}
+
+#myModal--effect-zoomIn.modal.fade.in .modal-dialog {
+   -webkit-transform: scale(1);
+   -moz-transform: scale(1);
+   -ms-transform: scale(1);
+   transform: scale(1);
+   -webkit-transform: translate3d(0, -120px, 0);
+   transform: translate3d(0, -120px, 0);
+   opacity: 1;
+}
+
+.modal-dialog {
+  width: 30%;
+}
+
+.custom_modal_field {
+  margin-top: 20px;
 }
