@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-sm-10 center">
+    <p id="p01">or</p>
+    Already have an account? 
+    <a href="#" data-toggle="modal" data-target="#myModal--effect-zoomIn">Log in</a></div>
+</div>
+<!-- Modal -->
+<div id="myModal--effect-zoomIn" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Log in</h4>
+      </div>
+      <%= form_for(:session, :html => {class: "form-horizontal", role: "form"}, url: login_path) do |f| %>
+        <div class="form-group custom_modal_field">
+          <div class="col-sm-10 col-sm-offset-1">
+            <%= f.email_field :email, class: "form-control", placeholder: "Email", autofocus: true %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-10 col-sm-offset-1">
+            <%= f.password_field :password, class: "form-control", placeholder: "Password", autocomplete: "off" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-10 center">
+            <%= f.submit "Log in", class: 'btn btn-primary btn-sm' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

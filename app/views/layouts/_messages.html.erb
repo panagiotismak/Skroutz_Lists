@@ -1,0 +1,13 @@
+<div class="row display_msg">
+  <div class="col-xs-10 col-xs-offset-1">
+	<% flash.each do |name, msg|%>
+  	  <div class='alert alert-<%= "#{name} "%> fade in'>
+  	  	<a href="#" class="close" data-dismiss="alert">&#215;</a>
+  	  	<%= content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String) %>
+  	  </div>
+    <% end %>
+    <script>
+      setTimeout("$('.display_msg').fadeOut('slow')", 3000)
+    </script>
+  </div>
+</div>
