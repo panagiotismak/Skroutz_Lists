@@ -83,9 +83,22 @@ body {
   margin-top: 20px;
 }
 
-.list_div {
+.create_list_div {
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
   border-style: dashed;
   border-color: #cacaca;
+  height: 300px;
+}
+
+.list_div {
+  border-style: solid;
+  border-color: #cacaca;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: #fff;
   height: 300px;
 }
 

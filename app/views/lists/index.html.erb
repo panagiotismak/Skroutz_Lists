@@ -3,10 +3,8 @@
 <div class="row">
   <% @lists.each do |list| %>
     <div class="col-sm-6 col-md-2">
-      <div class="well well-lg">
-        <div class="show_list">
-          <%= list.name %>
-        </div>
+      <div class="list_div">
+        <%= list.name %>
       </div>
     </div>
   <% end %>

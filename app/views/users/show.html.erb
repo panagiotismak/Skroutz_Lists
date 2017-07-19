@@ -1,14 +1,17 @@
 <h1 align="center">My Lists</h1>
 
 <div class="row">
-  <div class="col-sm-6 col-md-2 col-md-offset-1">
-  	<div class="list_div">
+  <div class="col-sm-6 col-md-2">
+  	<div class="create_list_div">
       <p id="p02">Create your lists. Start by entering a name </p>
-      <%= form_for(@list, :html => {class: "form-horizontal", role: "form"}, url: lists_path ) do |f| %>
+      <%= form_for :list, url: lists_path, :html => {class: "form-horizontal", role: "form"} do |f| %>
         <div class="form-group">
           <div class="col-sm-10 col-sm-offset-1">
             <%= f.text_field :name, class: "form-control", placeholder: "e.g Running shoes", autofocus: true %>
           </div>
+        </div>
+        <div class="checkbox col-md-offset-1">
+          <label><input type="checkbox" value="">Private list</label>
         </div>
         <div>
           <%= f.submit "Create list", class: 'btn btn-primary btn-sm col-sm-10 col-sm-offset-1' %> 
@@ -17,14 +20,10 @@
     </div>
   </div>
   <% current_user.lists.each do |list| %>
-    <div class="row">
-      <div class="col-sm-6 col-md-2">
-        <div class="well well-lg">
-          <div class="show_list">
-            <%= list.name %>
-          </div>
-        </div>
+    <div class="col-sm-6 col-md-2">
+      <div class="list_div">
+        <%= list.name %>
       </div>
     </div>
-  <% end %>
+    <% end %>
 </div>
