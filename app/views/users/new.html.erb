@@ -30,8 +30,6 @@
         <%= f.submit "Sign up", class: 'btn btn-primary btn-sm col-sm-10' %> 
       </div>
     <% end %>
-    <% if !logged_in?%>
-      <%= render 'login_modal' %>
-    <% end %>
+    <%= render 'login_modal' %>
   </div>
 </div>

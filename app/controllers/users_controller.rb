@@ -5,7 +5,11 @@ class UsersController < ApplicationController
   before_action :require_admin, only: [:destroy]
 
   def new
-   @user = User.new
+    if logged_in?
+      redirect_to user_path(current_user)
+    else
+      @user = User.new
+    end
   end
 
   def create
@@ -34,7 +38,7 @@ class UsersController < ApplicationController
 
   def show
   end
-  
+
   private
   def user_params  
   	params.require(:user).permit(:username, :email, :password, :password_confirmation)

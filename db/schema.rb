@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170718122157) do
+ActiveRecord::Schema.define(version: 20170719113434) do
 
   create_table "lists", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
-    t.boolean "visible"
+    t.boolean "private", default: false
     t.integer "votes_count"
     t.float "total_price"
     t.integer "user_id", null: false
