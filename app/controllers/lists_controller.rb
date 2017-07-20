@@ -1,4 +1,6 @@
 class ListsController < ApplicationController
+
+  before_action :set_list, only: [:show, :flop, :visibility_status]
   
   def new
 
@@ -27,9 +29,23 @@ class ListsController < ApplicationController
   def index
     @lists = List.all
   end
+  
+  def show
+
+  end
+
+  def flop
+    @list.private = !@list.private # flop the status
+    @list.save
+    redirect_to list_path(@list)
+  end
 
   private
   def list_params  
     params.require(:list).permit(:name, :private)
+  end
+
+  def set_list
+    @list = List.find(params[:id])
   end
 end

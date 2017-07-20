@@ -22,7 +22,7 @@
   <% current_user.lists.each do |list| %>
     <div class="col-sm-6 col-md-2">
       <div class="list_div">
-        <%= list.name %>
+        <%= link_to list.name, list_path(list) %>
       </div>
     </div>
   <% end %>

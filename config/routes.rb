@@ -11,4 +11,10 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
 
   resources :lists
+
+  resources :lists do
+    member do
+        get :flop
+    end
+  end
 end

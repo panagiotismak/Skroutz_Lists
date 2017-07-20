@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col-sm-6 col-md-2">
+    <div class="list_div">
+      <%= @list.name %>
+      <small id="sm01">
+    	<%= link_to (@list.private? ? "private" : "visible"), flop_list_path(@list), :title => "Click to change status" %>
+      </small>
+    </div>
+  </div>
+</div>
