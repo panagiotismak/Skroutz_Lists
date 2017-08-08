@@ -9,13 +9,13 @@ class ListsController < ApplicationController
   def create
     @list = List.new(list_params)
     @list.user = current_user
-    if @list.save
-      flash[:success] = "List was successfully created"
-      redirect_to user_path(current_user)
-    else
-      flash[:danger] = @list.errors.full_messages.first
-      redirect_to user_path(current_user)
-    end
+     if @list.save
+       flash[:success] = "List was successfully created"
+       redirect_to user_path(current_user)
+      else
+        flash[:danger] = @list.errors.full_messages.first
+        redirect_to user_path(current_user)
+      end
   end
 
   def edit
@@ -37,7 +37,7 @@ class ListsController < ApplicationController
   def flop
     @list.private = !@list.private # flop the status
     @list.save
-    redirect_to list_path(@list)
+    render json:{}, status: :ok
   end
 
   private

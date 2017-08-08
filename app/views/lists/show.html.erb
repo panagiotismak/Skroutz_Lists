@@ -2,9 +2,26 @@
   <div class="col-sm-6 col-md-2">
     <div class="list_div">
       <%= @list.name %>
-      <small id="sm01">
-    	<%= link_to (@list.private? ? "private" : "visible"), flop_list_path(@list), :title => "Click to change status" %>
+      <small id="sm01" class="js-private <%= "hidden" if !@list.private? %>" data-list="<%= @list.id %>" >
+    	private
+      </small>
+      <small id="sm01" class="js-visible <%= "hidden" if @list.private? %>" data-list="<%= @list.id %>" >
+    	visible
       </small>
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".js-visible, .js-private").on('click', function(){
+      $.ajax({
+        url:"/lists/"+$(this).data("list")+"/flop",
+        success: function(data){
+          $(".js-private").toggleClass("hidden");
+          $(".js-visible").toggleClass("hidden");
+        }
+      });
+    }); 
+  });
+</script>
