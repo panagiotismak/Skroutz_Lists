@@ -1,5 +1,8 @@
 <h1 align="center">My Lists</h1>
 
+<div align="center">
+  <%= will_paginate @user_lists%>
+</div>
 <div class="row">
   <div class="col-sm-6 col-md-2">
   	<div class="create_list_div">
@@ -19,7 +22,7 @@
       <% end %>
     </div>
   </div>
-  <% current_user.lists.each do |list| %>
+  <% @user_lists.each do |list| %>
     <div class="col-sm-6 col-md-2">
       <div class="list_div">
         <%= link_to list.name, list_path(list) %>

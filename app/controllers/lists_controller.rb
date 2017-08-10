@@ -27,7 +27,8 @@ class ListsController < ApplicationController
   end
 
   def index
-    @lists = List.all
+    @users = User.all
+    @lists = List.paginate(page: params[:page], per_page: 12)
   end
   
   def show
