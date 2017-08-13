@@ -1,6 +1,7 @@
 class ListsController < ApplicationController
 
-  before_action :set_list, only: [:show, :flop, :visibility_status]
+  before_action :set_list, only: [:show, :flop, :visibility_status, :destroy]
+  before_action :require_same_user, only: [:show]
   
   def new
 
@@ -28,11 +29,17 @@ class ListsController < ApplicationController
 
   def index
     @users = User.all
-    @lists = List.paginate(page: params[:page], per_page: 12)
+    @lists = List.visible.paginate(page: params[:page], per_page: 12)
   end
   
   def show
 
+  end
+
+  def destroy
+    @list.destroy
+    flash[:danger] = "List was successfully deleted"
+    redirect_to user_path(current_user)
   end
 
   def flop
@@ -48,5 +55,12 @@ class ListsController < ApplicationController
 
   def set_list
     @list = List.find(params[:id])
+  end
+
+  def require_same_user
+    if current_user != @list.user && !current_user.admin?
+      flash[:danger] = "You don't have permissions to view this page"
+      redirect_to lists_path
+    end
   end
 end
