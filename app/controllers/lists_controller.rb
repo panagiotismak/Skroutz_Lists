@@ -1,6 +1,6 @@
 class ListsController < ApplicationController
 
-  before_action :set_list, only: [:show, :flop, :visibility_status, :destroy]
+  before_action :set_list, only: [:show, :flop, :visibility_status, :destroy, :add_product]
   before_action :require_same_user, only: [:show]
   
   def new
@@ -10,9 +10,9 @@ class ListsController < ApplicationController
   def create
     @list = List.new(list_params)
     @list.user = current_user
-     if @list.save
-       flash[:success] = "List was successfully created"
-       redirect_to user_path(current_user)
+      if @list.save
+        flash[:success] = "List was successfully created"
+        redirect_to user_path(current_user)
       else
         flash[:danger] = @list.errors.full_messages.first
         redirect_to user_path(current_user)
@@ -46,6 +46,19 @@ class ListsController < ApplicationController
     @list.private = !@list.private # flop the status
     @list.save
     render json:{}, status: :ok
+  end
+  
+  #  POST   /lists/:id/add_product
+  def add_product
+    skroutz=Skroutzapi.new
+    product=skroutz.search_sku_by_id(params[:skuid])
+    if !product.present?
+      flash[:danger]="This sku doesn't exist"
+      redirect_to root_path
+    else
+      sku_list=SkuList.new(sku_id: params[:skuid], list_id: @list.id)
+      sku_list.save 
+    end
   end
 
   private

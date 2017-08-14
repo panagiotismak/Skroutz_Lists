@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170719113434) do
+ActiveRecord::Schema.define(version: 20170813200655) do
 
   create_table "lists", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -23,11 +23,18 @@ ActiveRecord::Schema.define(version: 20170719113434) do
     t.index ["user_id"], name: "index_lists_on_user_id"
   end
 
+  create_table "sku_lists", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "sku_id"
+    t.integer "list_id", null: false
+    t.index ["list_id"], name: "index_sku_lists_on_list_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "email"
     t.string "password_digest"
-    t.string "password_confirmation"
     t.boolean "admin", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :lists do
     member do
         get :flop
+        post :add_product
     end
   end
 end
