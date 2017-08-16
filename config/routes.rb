@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     member do
         get :flop
         post :add_product
+        put :remove_product
     end
   end
 end

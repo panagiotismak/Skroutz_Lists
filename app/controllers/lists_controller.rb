@@ -1,7 +1,9 @@
 class ListsController < ApplicationController
 
-  before_action :set_list, only: [:show, :flop, :visibility_status, :destroy, :add_product]
+  before_action :set_list, only: [:show, :flop, :visibility_status, :destroy, :add_product, :remove_product]
   before_action :require_same_user, only: [:show]
+  before_action :set_skroutz_connection, only: [:show, :add_product, :skus_associated_to_list]
+  before_action :skus_associated_to_list, only: [:show]
   
   def new
 
@@ -33,7 +35,7 @@ class ListsController < ApplicationController
   end
   
   def show
-
+    
   end
 
   def destroy
@@ -50,15 +52,23 @@ class ListsController < ApplicationController
   
   #  POST   /lists/:id/add_product
   def add_product
-    skroutz=Skroutzapi.new
-    product=skroutz.search_sku_by_id(params[:skuid])
+    product=@skroutz.search_sku_by_id(params[:skuid])
     if !product.present?
       flash[:danger]="This sku doesn't exist"
-      redirect_to root_path
-    else
-      sku_list=SkuList.new(sku_id: params[:skuid], list_id: @list.id)
-      sku_list.save 
+      return redirect_to list_path(@list)
     end
+    @sku_list=SkuList.new(sku_id: params[:skuid], list_id: @list.id)
+      if @sku_list.save
+        redirect_to list_path(@list)
+      else
+        skus_associated_to_list
+        render 'show'
+      end 
+  end
+  
+  def remove_product
+    @list.sku_lists.where(sku_id: params[:skuid].to_i).destroy_all
+    redirect_to list_path(@list)
   end
 
   private
@@ -76,4 +86,15 @@ class ListsController < ApplicationController
       redirect_to lists_path
     end
   end
+
+  def set_skroutz_connection
+    @skroutz=Skroutzapi.new
+  end
+
+  def skus_associated_to_list
+    @products=[]
+    @list.sku_lists.pluck(:sku_id).each do |variable|
+      @products << @skroutz.search_sku_by_id(variable)
+    end
+  end  
 end
