@@ -1,9 +1,9 @@
 class ListsController < ApplicationController
 
-  before_action :set_list, only: [:show, :flop, :visibility_status, :destroy, :add_product, :remove_product]
+  before_action :set_list, only: [:show, :flop, :visibility_status, :destroy, :add_product, :remove_product, :search_product]
   before_action :require_same_user, only: [:show]
-  before_action :set_skroutz_connection, only: [:show, :add_product, :skus_associated_to_list]
-  before_action :skus_associated_to_list, only: [:show]
+  before_action :set_skroutz_connection, only: [:show, :add_product, :skus_associated_to_list, :search_product]
+  before_action :skus_associated_to_list, only: [:show, :search_product]
   
   def new
 
@@ -35,7 +35,7 @@ class ListsController < ApplicationController
   end
   
   def show
-    
+    @list_products = @list.sku_lists.paginate(page: params[:page], per_page:5)
   end
 
   def destroy
@@ -70,6 +70,16 @@ class ListsController < ApplicationController
     @list.sku_lists.where(sku_id: params[:skuid].to_i).destroy_all
     redirect_to list_path(@list)
   end
+  
+  def search_product
+    product=@skroutz.search_sku_by_id(params[:skuid])
+    if !product.present?
+      flash[:danger]="This sku doesn't exist"
+      return redirect_to list_path(@list)
+    end
+    @modal=true
+    render 'show'
+  end
 
   private
   def list_params  
@@ -92,6 +102,7 @@ class ListsController < ApplicationController
   end
 
   def skus_associated_to_list
+    @product=@skroutz.search_sku_by_id(params[:skuid])
     @products=[]
     @list.sku_lists.pluck(:sku_id).each do |variable|
       @products << @skroutz.search_sku_by_id(variable)

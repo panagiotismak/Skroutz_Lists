@@ -1,0 +1,26 @@
+<!-- Modal -->
+<div id="productModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= @product.name %></h4>
+      </div>
+      <div class="modal-body">
+        <img src="<%= @product.images["main"]%>">
+      </div>
+      <div class="modal-footer">
+        <div class="dropdown modal_div_footer">
+          <span>Price</span>
+          <div class="dropdown-content">
+            <p>Minimum price: <%= @product.price_min%></p>&#8364;
+            <p>Maximum price: <%= @product.price_max%></p>&#8364;
+          </div>
+        </div>
+        <%= button_to"Add to list", add_product_list_path, class: "btn-success" %>
+      </div>
+    </div>
+  </div>
+</div>

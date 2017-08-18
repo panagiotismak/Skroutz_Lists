@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         get :flop
         post :add_product
         put :remove_product
+        get :search_product
     end
   end
 end
