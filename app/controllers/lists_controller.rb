@@ -1,79 +1,81 @@
 class ListsController < ApplicationController
 
-  before_action :set_list, only: [:show, :flop, :visibility_status, :destroy, :add_product, :remove_product, :search_product]
-  before_action :require_same_user, only: [:show]
+  before_action :set_list, except: [:new, :create, :edit, :update, :index]
+  before_action :require_same_user, only: [:edit, :update, :flop, :add_product, :remove_product]
   before_action :set_skroutz_connection, only: [:show, :add_product, :skus_associated_to_list, :search_product]
   before_action :skus_associated_to_list, only: [:show, :search_product]
   
-  def new
-
-  end
-
+  # Get /lists/new
+  def new; end
+  
+  # Post /lists
   def create
     @list = List.new(list_params)
     @list.user = current_user
-      if @list.save
-        flash[:success] = "List was successfully created"
-        redirect_to user_path(current_user)
-      else
-        flash[:danger] = @list.errors.full_messages.first
-        redirect_to user_path(current_user)
-      end
+    if @list.save
+      flash[:success] = "List was successfully created"
+      redirect_to user_path(current_user)
+    else
+      flash[:danger] = @list.errors.full_messages.first
+      redirect_to user_path(current_user)
+    end
   end
-
-  def edit
-
-  end
-
-  def update
-
-  end
-
+  
+  # Get /lists/:id/edit
+  def edit; end
+  
+  # Put /lists/:id
+  def update; end
+  
+  # Get /lists
   def index
-    @users = User.all
     @lists = List.visible.paginate(page: params[:page], per_page: 12)
   end
   
+  # Get /lists/:id
   def show
-    @list_products = @list.sku_lists.paginate(page: params[:page], per_page:5)
+   @list_products = @products.paginate(page: params[:page], per_page: 5)
   end
-
+  
+  # Delete /lists/:id
   def destroy
     @list.destroy
     flash[:danger] = "List was successfully deleted"
     redirect_to user_path(current_user)
   end
-
+  
+  # Get /lists/:id/flop
   def flop
     @list.private = !@list.private # flop the status
-    @list.save
-    render json:{}, status: :ok
+    if @list.save
+      render json:{}, status: :ok
+    else
+      render json:{}, status: :unprocessable_entity
+    end
   end
   
   #  POST   /lists/:id/add_product
   def add_product
-    product=@skroutz.search_sku_by_id(params[:skuid])
-    if !product.present?
-      flash[:danger]="This sku doesn't exist"
-      return redirect_to list_path(@list)
-    end
+    
     @sku_list=SkuList.new(sku_id: params[:skuid], list_id: @list.id)
-      if @sku_list.save
-        redirect_to list_path(@list)
-      else
-        skus_associated_to_list
-        render 'show'
-      end 
+    if @sku_list.save
+      redirect_to list_path(@list)
+    else
+      skus_associated_to_list
+      render 'show'
+    end 
   end
   
+  # Put /lists/:id/remove_product
   def remove_product
     @list.sku_lists.where(sku_id: params[:skuid].to_i).destroy_all
     redirect_to list_path(@list)
   end
   
+  # Get /lists/:id/search_product
   def search_product
-    product=@skroutz.search_sku_by_id(params[:skuid])
-    if !product.present?
+    @product=@skroutz.search_sku_by_id(params[:skuid])
+    if !@product.present?
       flash[:danger]="This sku doesn't exist"
       return redirect_to list_path(@list)
     end
@@ -91,6 +93,7 @@ class ListsController < ApplicationController
   end
 
   def require_same_user
+    binding.pry
     if current_user != @list.user && !current_user.admin?
       flash[:danger] = "You don't have permissions to view this page"
       redirect_to lists_path
@@ -100,9 +103,8 @@ class ListsController < ApplicationController
   def set_skroutz_connection
     @skroutz=Skroutzapi.new
   end
-
+  
   def skus_associated_to_list
-    @product=@skroutz.search_sku_by_id(params[:skuid])
     @products=[]
     @list.sku_lists.pluck(:sku_id).each do |variable|
       @products << @skroutz.search_sku_by_id(variable)
