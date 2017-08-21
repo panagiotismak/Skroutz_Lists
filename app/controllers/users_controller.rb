@@ -37,7 +37,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user_lists = @user.lists.paginate(page: params[:page], per_page: 11)
+    @user_lists = @user.lists.order("created_at DESC").paginate(page: params[:page], per_page: 11)
   end
 
   private

@@ -29,7 +29,7 @@ class ListsController < ApplicationController
   
   # Get /lists
   def index
-    @lists = List.visible.paginate(page: params[:page], per_page: 12)
+    @lists = List.visible.order("created_at DESC").paginate(page: params[:page], per_page: 12)
   end
   
   # Get /lists/:id
@@ -47,16 +47,12 @@ class ListsController < ApplicationController
   # Get /lists/:id/flop
   def flop
     @list.private = !@list.private # flop the status
-    if @list.save
-      render json:{}, status: :ok
-    else
-      render json:{}, status: :unprocessable_entity
-    end
+    @list.save
+    render json:{}, status: :ok
   end
   
   #  POST   /lists/:id/add_product
   def add_product
-    
     @sku_list=SkuList.new(sku_id: params[:skuid], list_id: @list.id)
     if @sku_list.save
       redirect_to list_path(@list)
@@ -93,7 +89,6 @@ class ListsController < ApplicationController
   end
 
   def require_same_user
-    binding.pry
     if current_user != @list.user && !current_user.admin?
       flash[:danger] = "You don't have permissions to view this page"
       redirect_to lists_path
