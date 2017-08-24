@@ -10,4 +10,12 @@ class Skroutzapi
   	  false
     end  	
   end
+
+  def find_sku_category(id)
+    begin
+      @skroutz.categories.find(id)
+    rescue => e 
+      false
+    end   
+  end
 end

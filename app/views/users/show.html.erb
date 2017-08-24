@@ -25,11 +25,12 @@
   <% @user_lists.each do |list| %>
     <div class="col-sm-6 col-md-2">
       <div class="list_div">
+        <%= render 'lists/edit_modal' %>
         <%= link_to list.name, list_path(list) %>
         <%= link_to list_path(list), :title => "Delete list", class: "btn btn-xs trashglyphicon", 
-         method: :delete, data: {confirm: "Are you sure you want to delete this list?"} do %>
-        <span class="glyphicon glyphicon-trash"></span>
-      <% end %>
+          method: :delete, data: {confirm: "Are you sure you want to delete this list?"} do %>
+          <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
       </div>
     </div>
   <% end %>

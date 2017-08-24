@@ -3,7 +3,7 @@
 <div align="center">
 
 <div align="center">
-  <%= will_paginate @list_products if @list_products %>
+  <%= will_paginate @list_products %>
 </div>
 
 </div>
@@ -33,26 +33,30 @@
       </div>
     </div>
   <%end%>
-  <% if @list_products %>
-    <% @list_products.each do |product| %>
-      <div class="col-sm-6 col-md-2">
-        <div class="list_div">
-          <% if current_user == @list.user %>
-            <%= link_to remove_product_list_path(@list, skuid: product.id), class: "btn btn-xs", 
-            method: :put, data: {confirm: "Are you sure you want to delete this product from the list?"} do %>
-            <span class="glyphicon glyphicon-remove"></span>
-            <% end %>
+  <% @list_products.each do |product| %>
+    <div class="col-sm-6 col-md-2">
+      <div class="list_div">
+        <small>
+          <%= @skroutz.find_sku_category(product.category_id).name %>
+        </small>
+        <% if current_user == @list.user %>
+          <%= link_to remove_product_list_path(@list, skuid: product.id), class: "btn btn-xs trashglyphicon", 
+          method: :put, data: {confirm: "Are you sure you want to delete this product from the list?"} do %>
+          <span class="glyphicon glyphicon-remove"></span>
           <% end %>
-          <div>
-            <img src="<%= product.images["main"]%>">
-          </div>
-          <div>
-            <%= product.name %>
-          </div>  
+        <% end %>
+        <div>
+          <img src="<%= product.images["main"]%>">
         </div>
+        <div>
+          <%= product.name %>
+        </div>  
+        <small>
+            <p>Price: <%= product.price_min%> --> <%= product.price_max%> &#8364;</p>
+          </small>
       </div>
-    <% end %>
-  <%end%>
+    </div>
+  <% end %>
 </div>
 
 <script type="text/javascript">

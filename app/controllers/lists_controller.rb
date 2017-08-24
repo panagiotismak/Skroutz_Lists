@@ -1,9 +1,10 @@
 class ListsController < ApplicationController
 
-  before_action :set_list, except: [:new, :create, :edit, :update, :index]
+  before_action :set_list, except: [:new, :create, :update, :index]
   before_action :require_same_user, only: [:edit, :update, :flop, :add_product, :remove_product]
   before_action :set_skroutz_connection, only: [:show, :add_product, :skus_associated_to_list, :search_product]
-  before_action :skus_associated_to_list, only: [:show, :search_product]
+  before_action :skus_associated_to_list, only: [:show, :search_product, :products_for_pagination]
+  before_action :products_for_pagination, only: [:show, :search_product]
   
   # Get /lists/new
   def new; end
@@ -34,7 +35,7 @@ class ListsController < ApplicationController
   
   # Get /lists/:id
   def show
-   @list_products = @products.paginate(page: params[:page], per_page: 5)
+   
   end
   
   # Delete /lists/:id
@@ -105,4 +106,8 @@ class ListsController < ApplicationController
       @products << @skroutz.search_sku_by_id(variable)
     end
   end  
+
+  def products_for_pagination
+    @list_products = @products.paginate(page: params[:page], per_page: 5)
+  end
 end

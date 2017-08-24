@@ -10,14 +10,15 @@
       </div>
       <div class="modal-body">
         <img src="<%= @product.images["main"]%>">
+        <small class="trashglyphicon">
+          <%= @skroutz.find_sku_category(@product.category_id).name %>
+        </small>
       </div>
       <div class="modal-footer">
-        <div class="dropdown modal_div_footer">
-          <span>Price</span>
-          <div class="dropdown-content">
-            <p>Minimum price: <%= @product.price_min%></p>&#8364;
-            <p>Maximum price: <%= @product.price_max%></p>&#8364;
-          </div>
+        <div class="modal_div_footer">
+          <small>
+            <p>Price: <%= @product.price_min%> --> <%= @product.price_max%> &#8364;</p>
+          </small>
         </div>
         <%= button_to"Add to list", add_product_list_path(@list, skuid: @product.id), class: "btn-success" %>
       </div>
