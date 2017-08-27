@@ -1,6 +1,6 @@
 class ListsController < ApplicationController
 
-  before_action :set_list, except: [:new, :create, :update, :index]
+  before_action :set_list, except: [:new, :create, :index]
   before_action :require_same_user, only: [:edit, :update, :flop, :add_product, :remove_product]
   before_action :set_skroutz_connection, only: [:show, :add_product, :skus_associated_to_list, :search_product]
   before_action :skus_associated_to_list, only: [:show, :search_product, :products_for_pagination]
@@ -26,7 +26,15 @@ class ListsController < ApplicationController
   def edit; end
   
   # Put /lists/:id
-  def update; end
+  def update
+    if @list.update(list_params)
+      flash[:success] = "List name was successfully updated"
+      redirect_to user_path(current_user)
+    else
+      flash[:danger] = "List was not updated"
+      redirect_to user_path(current_user)
+    end
+  end
   
   # Get /lists
   def index

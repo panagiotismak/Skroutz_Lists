@@ -12,14 +12,21 @@
         <h4 class="modal-title">Edit</h4>
       </div>
       <div class="modal-body">
-        
-      </div>
-      <div class="modal-footer">
-        <div class="modal_div_footer">
-          
+        <%= form_for list, url: list_path(list.id), :html => {class: "form-horizontal", role: "form"} do |f| %>
+        <div class="form-group">
+          <div class="col-sm-10 col-sm-offset-1">
+            <%= f.text_field :name, class: "form-control", placeholder: "e.g Running shoes", autofocus: true %>
+          </div>
         </div>
-        
+        <div class="checkbox col-md-offset-1">
+          <label><%= f.check_box :private %>Private list</label>
+        </div>
+        <div>
+          <%= f.submit "Update", class: 'btn btn-primary btn-sm  col-sm-offset-5  ' %> 
+        </div>
+      <% end %>
       </div>
+      
     </div>
   </div>
 </div>
