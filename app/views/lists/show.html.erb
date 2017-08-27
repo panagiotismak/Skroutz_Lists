@@ -1,31 +1,22 @@
 <%= render 'shared/errors', obj: @sku_list if @sku_list.present? %>
 <%if @modal==true%><%= render 'product_modal'%><%end%>
-<div align="center">
+
 
 <div align="center">
   <%= will_paginate @list_products %>
 </div>
 
-<% if current_user != @list.user %>
-  </div class="row">
-    <div align="center">
-      <p>List name: <%= @list.name %>  <span class="glyphicon glyphicon-thumbs-up"></span></p>
-      <p>Created by: <%= @list.user.username %></p>
-    </div>
-  </div>
-<%end%>
 
-</div>
 <div class="row">
-  <% if current_user == @list.user %>
-    <div class="col-sm-6 col-md-2">
-      <div class="list_div">
-        <p id="p02"><%= @list.name %></p>
+  <div class="col-sm-6 col-md-2">
+    <div class="list_div">
+      <p id="p02"><%= @list.name %></p>
+      <% if current_user == @list.user %>
         <small class="js-private <%= "hidden" if !@list.private? %>" data-list="<%= @list.id %>" title="Click to change status" >
-    	    private
+  	      private
         </small>
         <small class="js-visible <%= "hidden" if @list.private? %>" data-list="<%= @list.id %>" title="Click to change status">
-    	    visible
+  	      visible
         </small>
         <%= form_tag search_product_list_path(@list), method: :get do %>
           <div class="form-group">
@@ -39,9 +30,26 @@
             </div>
           </div>
         <% end %>
-      </div>
+      <% else %>
+        <p>User: <%= @list.user.username%></p>
+        <% if !current_user.vote_lists.exists?(@list.id) %>
+          <%= link_to vote_list_path(@list), class: "btn btn-lg", method: :post do %>
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+          <% end %>
+        <% else %>
+          <%= link_to unvote_list_path(@list), class: "btn btn-lg", method: :put do %>
+            <span class="glyphicon glyphicon-thumbs-down"></span>
+          <% end %>
+        <% end %>
+      <% end %>
+      <div class="footer">
+        <p>Total price: <%= @list.list_total_price %> &#8364;</p>
+        <p><small>Created at: <%= time_ago_in_words(@list.created_at) %> ago</small><p>
+        <p><small>Last updated at: <%= time_ago_in_words(@list.updated_at) %> ago</small></p>
+      </div> 
     </div>
-  <%end%>
+  </div>
+
   <% @list_products.each do |product| %>
     <div class="col-sm-6 col-md-2">
       <div class="list_div">
@@ -50,8 +58,8 @@
         </small>
         <% if current_user == @list.user %>
           <%= link_to remove_product_list_path(@list, skuid: product.id), class: "btn btn-xs trashglyphicon", 
-          method: :put, data: {confirm: "Are you sure you want to delete this product from the list?"} do %>
-          <span class="glyphicon glyphicon-remove"></span>
+            method: :put, data: {confirm: "Are you sure you want to delete this product from the list?"} do %>
+            <span class="glyphicon glyphicon-remove"></span>
           <% end %>
         <% end %>
         <div>
@@ -61,7 +69,7 @@
           <%= product.name %>
         </div>  
         <small>
-            <p>Price: <%= product.price_min%> --> <%= product.price_max%> &#8364;</p>
+            <p>Price: from <%= product.price_min%> &#8364;</p>
           </small>
       </div>
     </div>
@@ -70,7 +78,7 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $('#productModal').modal('show');
+    $('#myModal--effect-zoomIn').modal('show');
     $(".js-visible, .js-private").on('click', function(){
       $.ajax({
         url:"/lists/"+$(this).data("list")+"/flop",

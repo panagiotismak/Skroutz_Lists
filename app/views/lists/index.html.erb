@@ -1,13 +1,19 @@
-<h1 align="center">Welcome <%= current_user.username %></h1>
-
 <div align="center">
   <%= will_paginate %>
+</div>  
+<div align="center" >
+  <% if !@votes_order %>
+    <%= link_to "Sort by: Votes", lists_path(pagination_order: "votes") %>
+  <% else %>
+    <%= link_to "Sort by: Date", lists_path()%>
+  <% end %>
 </div>
 <div class="row">
   <% @lists.visible.each do |list| %>
     <div class="col-sm-6 col-md-2">
       <div class="list_div">
         <%= link_to list.name, list_path(list) %>
+        <p>Total price: <%= list.list_total_price %> &#8364;</p>
       </div>
     </div>
   <% end %>

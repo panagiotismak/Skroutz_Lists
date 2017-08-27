@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   has_many :lists, dependent: :destroy
+  has_many :list_votes
+  has_many :vote_lists, through: :list_votes, source: :list
 
   before_save { self.email = email.downcase }
 

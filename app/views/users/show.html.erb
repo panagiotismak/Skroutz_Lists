@@ -31,6 +31,7 @@
           method: :delete, data: {confirm: "Are you sure you want to delete this list?"} do %>
           <span class="glyphicon glyphicon-trash"></span>
         <% end %>
+        <p>Total price: <%= list.list_total_price %> &#8364;</p>
       </div>
     </div>
   <% end %>

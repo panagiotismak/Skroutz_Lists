@@ -31,14 +31,20 @@ class ListsController < ApplicationController
       flash[:success] = "List name was successfully updated"
       redirect_to user_path(current_user)
     else
-      flash[:danger] = "List was not updated"
+      flash[:danger] = @list.errors.full_messages.first
       redirect_to user_path(current_user)
     end
   end
   
   # Get /lists
   def index
-    @lists = List.visible.order("created_at DESC").paginate(page: params[:page], per_page: 12)
+    if params[:pagination_order].present? && params[:pagination_order]=="votes"
+      @votes_order=true
+      @lists = List.visible.order("votes_count DESC").paginate(page: params[:page], per_page: 12)
+    else
+      @votes_order=false
+      @lists = List.visible.order("created_at DESC").paginate(page: params[:page], per_page: 12)
+    end
   end
   
   # Get /lists/:id
@@ -87,6 +93,22 @@ class ListsController < ApplicationController
     @modal=true
     render 'show'
   end
+  
+  def vote
+    list_vote=ListVote.new(list_id: @list.id, user_id: current_user.id)
+    if list_vote.save
+      flash[:success]="Thank you for voting"
+    else
+      flash[:danger]="Sorry your vote could not be saved"
+    end
+    redirect_to list_path(@list)
+  end
+
+  def unvote
+    list_vote=ListVote.where(list_id: @list.id, user_id: current_user.id)
+    list_vote.destroy_all
+    redirect_to list_path(@list)
+  end
 
   private
   def list_params  
@@ -116,6 +138,6 @@ class ListsController < ApplicationController
   end  
 
   def products_for_pagination
-    @list_products = @products.paginate(page: params[:page], per_page: 5)
+    @list_products = @products.paginate(page: params[:page], per_page: 11)
   end
 end

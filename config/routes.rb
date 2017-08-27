@@ -18,6 +18,8 @@ Rails.application.routes.draw do
         post :add_product
         put :remove_product
         get :search_product
+        post :vote
+        put :unvote
     end
   end
 end
