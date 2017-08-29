@@ -2,7 +2,7 @@
   <%= will_paginate %>
 </div>  
 <div align="center" >
-  <% if !@votes_order %>
+  <% if !params[:pagination_order].present? %>
     <%= link_to "Sort by: Votes", lists_path(pagination_order: "votes") %>
   <% else %>
     <%= link_to "Sort by: Date", lists_path()%>

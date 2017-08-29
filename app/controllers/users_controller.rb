@@ -8,15 +8,15 @@ class UsersController < ApplicationController
     if logged_in?
       redirect_to user_path(current_user)
     else
-      @user = User.new
+      @user=User.new
     end
   end
 
   def create  
-    @user = User.new(user_params)
+    @user=User.new(user_params)
     if @user.save
-      session[:user_id] =@user.id
-      flash[:success] = "Welcome to Skroutz Lists #{@user.username}"
+      session[:user_id]=@user.id
+      flash[:success]="Welcome to Skroutz Lists #{@user.username}"
       redirect_to lists_path
   	else
       render 'new'
@@ -24,12 +24,12 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
+    @user=User.find(params[:id])
   end
 
   def update
     if @user.update(user_params)
-      flash[:success] = "User was successfully updated"
+      flash[:success]="User was successfully updated"
       redirect_to lists_path
     else
       render 'edit'
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user_lists = @user.lists.order("created_at DESC").paginate(page: params[:page], per_page: 11)
+    @user_lists=@user.lists.order("created_at DESC").paginate(page: params[:page], per_page: 11)
   end
 
   private
@@ -51,14 +51,14 @@ class UsersController < ApplicationController
 
   def require_same_user
     if current_user != @user && !current_user.admin?
-      flash[:danger] = "You don't have permissions to view this page"
+      flash[:danger]="You don't have permissions to view this page"
       redirect_to lists_path
     end
   end
   
   def require_admin
     if logged_in? && !current_user.admin?
-      flash[:danger] = "Only admin users can perfom that action"
+      flash[:danger]="Only admin users can perfom that action"
       redirect_to user_path(current_user)
     end
   end

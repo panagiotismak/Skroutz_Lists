@@ -15,11 +15,10 @@ class ListsController < ApplicationController
     @list.user = current_user
     if @list.save
       flash[:success] = "List was successfully created"
-      redirect_to user_path(current_user)
     else
       flash[:danger] = @list.errors.full_messages.first
-      redirect_to user_path(current_user)
     end
+    redirect_to user_path(current_user)
   end
   
   # Get /lists/:id/edit
@@ -29,28 +28,24 @@ class ListsController < ApplicationController
   def update
     if @list.update(list_params)
       flash[:success] = "List name was successfully updated"
-      redirect_to user_path(current_user)
     else
       flash[:danger] = @list.errors.full_messages.first
-      redirect_to user_path(current_user)
     end
+    redirect_to user_path(current_user)
   end
   
   # Get /lists
   def index
     if params[:pagination_order].present? && params[:pagination_order]=="votes"
-      @votes_order=true
       @lists = List.visible.order("votes_count DESC").paginate(page: params[:page], per_page: 12)
     else
-      @votes_order=false
+      params[:pagination_order]=""
       @lists = List.visible.order("created_at DESC").paginate(page: params[:page], per_page: 12)
     end
   end
   
   # Get /lists/:id
-  def show
-   
-  end
+  def show; end
   
   # Delete /lists/:id
   def destroy
@@ -62,24 +57,26 @@ class ListsController < ApplicationController
   # Get /lists/:id/flop
   def flop
     @list.private = !@list.private # flop the status
-    @list.save
-    render json:{}, status: :ok
+    if @list.save
+      render json:{}, status: :ok
+    else
+      render json:{}, status: :unprocessable_entity
+    end
   end
   
   #  POST   /lists/:id/add_product
   def add_product
     @sku_list=SkuList.new(sku_id: params[:skuid], list_id: @list.id)
-    if @sku_list.save
-      redirect_to list_path(@list)
-    else
+    if !@sku_list.save
       skus_associated_to_list
-      render 'show'
-    end 
+    end
+    redirect_to list_path(@list) 
   end
   
   # Put /lists/:id/remove_product
   def remove_product
     @list.sku_lists.where(sku_id: params[:skuid].to_i).destroy_all
+    flash[:success]="Product deleted"
     redirect_to list_path(@list)
   end
   
