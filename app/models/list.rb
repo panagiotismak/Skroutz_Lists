@@ -1,4 +1,5 @@
 class List < ActiveRecord::Base
+  require_dependency("lib/skroutzapi")
   belongs_to :user
   has_many :sku_lists
   has_many :list_votes
