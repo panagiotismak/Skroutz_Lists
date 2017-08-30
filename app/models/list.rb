@@ -13,9 +13,9 @@ class List < ActiveRecord::Base
   def list_total_price()
   	skroutz=Skroutzapi.new
     list_price = 0
-    self.sku_lists.pluck(:sku_id).each do |variable|
+    sku_lists.pluck(:sku_id).each do |variable|
       list_price +=  skroutz.search_sku_by_id(variable).price_min
     end
     list_price.round(2)
   end
-end 
+end
