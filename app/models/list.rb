@@ -5,7 +5,7 @@ class List < ActiveRecord::Base
   has_many :list_votes
   has_many :vote_users, through: :list_votes, source: :user
 
-  validates :name, presence: true, uniqueness: {scope: :user, case_sensitive: false}, length: {minimum: 3, maximun: 50}
+  validates :name, presence: true, uniqueness: {scope: :user, case_sensitive: false}, length: {in: 3..50}
   validates :user_id, presence: true
 
   scope :visible, -> {where(private: false)}
